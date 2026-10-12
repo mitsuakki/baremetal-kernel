@@ -1,4 +1,4 @@
-<h1 align="center">baremetal-x86_64-kernel</h1>
+<h1 align="center">baremetal-kernel</h1>
 
 <h4 align="center">
   <a href="https://github.com/mitsuakki/baremetal-x86_64-kernel/issues">Issues</a> |
