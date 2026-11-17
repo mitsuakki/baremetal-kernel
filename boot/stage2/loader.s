@@ -40,6 +40,9 @@ stage2_start:
     ; ---- 2. Enable A20 (full fallback chain) ----
     call enable_a20          ; A20 must be on to address beyond 1 MiB
 
+    call do_e820             ; Query BIOS memory map --> [0x6000] count, entries from 0x6008
+    jc   e820_err            ; CF set: unsupported or no valid entry
+
     cli                      ; no more BIOS calls after this point
 
     ; ---- 3. Load GDT, enter protected mode ----
@@ -50,6 +53,12 @@ stage2_start:
     mov  cr0, eax            ; we are now in 16-bit protected mode
 
     jmp  0x08:pmode_entry    ; far jump loads CS=0x08 → 32-bit code
+
+e820_err:
+    mov  al, 'M'                    ; 'M' = memory map error
+    mov  ah, 0x0E
+    int  0x10
+    jmp  $
 
 disk_err:
     mov  al, '2'             ; '2' = stage-2 disk error
@@ -66,6 +75,7 @@ drive_num: db 0              ; drive number saved at boot
 ; ===============================================================
 %include "a20.s"             ; A20 enable routines (16-bit)
 %include "gdt.s"             ; GDT data (16-bit)
+%include "e820.s"            ; E820 Upper Memory Detection
 
 ; ===============================================================
 ; 32-bit Protected Mode

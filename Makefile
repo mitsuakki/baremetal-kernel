@@ -76,7 +76,7 @@ debug: $(OS_IMG)
 	$(QEMU) -fda $< -serial stdio -s -S
 
 gdb:
-	gdb -ex "target remote localhost:1234" -ex "symbol-file $(KERNEL_ELF)"
+	gdb out/kernel.elf -ex "target remote 127.0.0.1:1234"
 
 clean:
 	rm -rf $(OUT_DIR)
