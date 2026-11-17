@@ -1,0 +1,7 @@
+* text=auto eol=lf
+
+# Artefacts compilés
+*.bin binary
+*.img binary
+*.elf binary
+*.o   binary
